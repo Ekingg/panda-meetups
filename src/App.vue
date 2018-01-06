@@ -4,7 +4,7 @@
 
 
     <!--Navigation drawer-->
-    <v-navigation-drawer absolute v-model="sideNav">
+    <v-navigation-drawer temporary absolute v-model="sideNav">
       <v-list>
         <!--:key="item.title for dynamic assigning-->
         <v-list-tile
@@ -25,8 +25,8 @@
     <!--Toolbar-->
     <v-toolbar dark class="light-blue accent-4">
       <v-toolbar-title>
-        <router-link to="/" style="cursor: pointer">
-          {{ title }}
+        <router-link to="/" class="title">
+          {{ mainTitle }}
         </router-link>
       </v-toolbar-title>
       <v-toolbar-side-icon
@@ -65,7 +65,7 @@
     data: function () {
       return {
         sideNav: false,
-        title: 'Panda`s Meetup',
+        mainTitle: 'Panda`s Meetup',
         menuItems: [
           {icon: 'supervisor_account', title: 'View Meetups', link: '/meetups'},
           {icon: 'room', title: 'Organize meetup', link: '/meetup/new'},
@@ -77,3 +77,11 @@
     }
   }
 </script>
+
+<style scoped>
+  .title {
+    cursor: pointer;
+    color: white;
+    text-decoration: none
+  }
+</style>
