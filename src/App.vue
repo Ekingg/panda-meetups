@@ -4,11 +4,12 @@
     <!--Navigation drawer-->
     <v-navigation-drawer absolute v-model="sideNav">
       <v-list>
-        <v-list-tile>
+        <!--:key="item.title for dynamic assigning-->
+        <v-list-tile v-for="item in menuItems" :key="item.title">
           <v-list-tile-action>
-            <v-icon>people</v-icon>
+            <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
-          <v-list-tile-content>View Meetups</v-list-tile-content>
+          <v-list-tile-content>{{ item.title }}</v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
@@ -21,16 +22,14 @@
         v-on:click="sideNav = !sideNav"
         class="hidden-sm-and-up"></v-toolbar-side-icon>
       <v-spacer></v-spacer>
-      <v-toolbar-items
-        v-on:click="sideNav = !sideNav"
-        class="hidden-xs-only">
-        <v-btn flat>
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn flat v-for="item in menuItems" :key="item.title">
           <!--
           Icon: just give name of icon from https://material.io/icons/
           and replace space with underscore! Haha =)
           -->
-          <v-icon left>people</v-icon>
-          View Meetups
+          <v-icon left>{{ item.icon }}</v-icon>
+          {{ item.title }}
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -47,7 +46,14 @@
   export default {
     data: function () {
       return {
-        sideNav: false
+        sideNav: false,
+        menuItems: [
+          {icon: 'supervisor_account', title: 'View Meetups'},
+          {icon: 'room', title: 'Organize meetup'},
+          {icon: 'people', title: 'Profile'},
+          {icon: 'account_circle', title: 'Sign up'},
+          {icon: 'lock_open', title: 'Sign in'}
+        ]
       }
     }
   }
