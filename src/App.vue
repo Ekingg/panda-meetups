@@ -1,11 +1,18 @@
 <template>
   <!--Theme light (dark)-->
   <v-app light>
+
+
     <!--Navigation drawer-->
     <v-navigation-drawer absolute v-model="sideNav">
       <v-list>
         <!--:key="item.title for dynamic assigning-->
-        <v-list-tile v-for="item in menuItems" :key="item.title">
+        <v-list-tile
+          v-for="item in menuItems"
+          :key="item.title"
+          router
+          :to="item.link"
+        >
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
@@ -17,16 +24,27 @@
 
     <!--Toolbar-->
     <v-toolbar dark class="light-blue accent-4">
-      <v-toolbar-title>Meetup</v-toolbar-title>
+      <v-toolbar-title>
+        <router-link to="/" style="cursor: pointer">
+          {{ title }}
+        </router-link>
+      </v-toolbar-title>
       <v-toolbar-side-icon
         v-on:click="sideNav = !sideNav"
-        class="hidden-sm-and-up"></v-toolbar-side-icon>
+        class="hidden-sm-and-up"
+      ></v-toolbar-side-icon>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn flat v-for="item in menuItems" :key="item.title">
+        <v-btn
+          flat
+          v-for="item in menuItems"
+          :key="item.title"
+          router
+          :to="item.link"
+        >
           <!--
           Icon: just give name of icon from https://material.io/icons/
-          and replace space with underscore! Haha =)
+          and replace space with underscore!
           -->
           <v-icon left>{{ item.icon }}</v-icon>
           {{ item.title }}
@@ -37,7 +55,7 @@
 
     <!--Main-->
     <main>
-
+      <router-view></router-view>
     </main>
   </v-app>
 </template>
@@ -47,12 +65,13 @@
     data: function () {
       return {
         sideNav: false,
+        title: 'Panda`s Meetup',
         menuItems: [
-          {icon: 'supervisor_account', title: 'View Meetups'},
-          {icon: 'room', title: 'Organize meetup'},
-          {icon: 'people', title: 'Profile'},
-          {icon: 'account_circle', title: 'Sign up'},
-          {icon: 'lock_open', title: 'Sign in'}
+          {icon: 'supervisor_account', title: 'View Meetups', link: '/meetups'},
+          {icon: 'room', title: 'Organize meetup', link: '/meetup/new'},
+          {icon: 'people', title: 'Profile', link: '/profile'},
+          {icon: 'account_circle', title: 'Sign up', link: '/signup'},
+          {icon: 'lock_open', title: 'Sign in', link: '/signin'}
         ]
       }
     }
