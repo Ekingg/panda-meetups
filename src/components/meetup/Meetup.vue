@@ -5,6 +5,7 @@
         <v-card>
           <v-card-title>
             <h3 class="primary--text">{{ meetup.title }}</h3>
+            <p>Temporary creation date: {{ meetup.creationDate }}</p>
           </v-card-title>
           <v-card-media
             :src="meetup.imageUrl"
@@ -12,13 +13,15 @@
           </v-card-media>
           <v-card-text class="pb-0">
             <div>
-              <b class="secondary--text">{{ meetup.date }}</b>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi non quam repellendus similique
-                suscipit.
-                Ducimus fugiat harum id illo nobis recusandae reiciendis tempora velit voluptatum. Consectetur dolore,
-                odio.
-                Officiis, pariatur.</p>
+              <b class="secondary--text">
+                <p>{{ meetup.location }}</p>
+                <p>
+                  <v-icon>alarm_on</v-icon>
+                  {{ meetup.date }}
+                </p>
+
+              </b>
+              <p>{{ meetup.description }}</p>
             </div>
           </v-card-text>
           <v-card-actions>
