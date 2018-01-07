@@ -5,7 +5,6 @@
         <v-card>
           <v-card-title>
             <h3 class="primary--text">{{ meetup.title }}</h3>
-            <p>Temporary creation date: {{ meetup.creationDate }}</p>
           </v-card-title>
           <v-card-media
             :src="meetup.imageUrl"
@@ -17,7 +16,7 @@
                 <p>{{ meetup.location }}</p>
                 <p>
                   <v-icon>alarm_on</v-icon>
-                  {{ meetup.date }}
+                  {{ meetup.date | date }}
                 </p>
 
               </b>

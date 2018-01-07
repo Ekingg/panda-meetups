@@ -22,7 +22,8 @@
                     <!-- "--text" works for all colors
                   without "--text" will changed background color-->
                     <h2 class="white--text">{{ meetup.title }}</h2>
-                    <div>{{ meetup.date }}</div>
+                    <!-- | date means add filter registered as DateFilter -->
+                    <div>{{ meetup.date | date }}</div>
                   </div>
                 </v-card-title>
                 <v-card-actions>

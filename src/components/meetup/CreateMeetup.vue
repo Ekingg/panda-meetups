@@ -119,7 +119,7 @@
         imageUrl: '',
         description: '',
         creationDate: new Date(),
-        date: new Date().toISOString().slice(0, 10),
+        date: new Date().toISOString().slice(0, 10), // default values
         time: new Date().toString().slice(16, 21)
       }
     },
@@ -145,7 +145,13 @@
         }
       },
       submittableDateTime: function () {
-        return this.date + ' ' + this.time// .slice(0, 5)
+        console.log(this.date)
+        return new Date(
+          this.date.slice(0, 4),
+          parseInt(this.date.slice(5, 7)) - 1,
+          parseInt(this.date.slice(8, 10)),
+          this.time.slice(0, 2),
+          this.time.slice(3, 5))
       }
     },
     methods: {
@@ -160,6 +166,7 @@
           description: this.description,
           date: this.submittableDateTime
         }
+        console.log(meetUpData)
         this.$store.dispatch('createMeetup', meetUpData)
         this.$router.push('/meetups')
       }

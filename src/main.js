@@ -5,6 +5,10 @@ import 'vuetify/dist/vuetify.css'
 import App from './App'
 import router from './router'
 import {store} from './store'
+import DateFilter from './filters/data'
+
+// register global filter
+Vue.filter('date', DateFilter)
 
 Vue.use(Vuetify, {
   theme: {
