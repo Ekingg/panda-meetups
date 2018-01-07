@@ -2,14 +2,14 @@ import Vue from 'vue'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
-
 import App from './App'
 import router from './router'
+import {store} from './store'
 
 Vue.use(Vuetify, {
   theme: {
     primary: '#0091ea',
-    secondary: '#b0bec5',
+    secondary: '#707b82',
     accent: '#8c9eff',
     error: '#b71c1c'
   }
@@ -21,5 +21,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })

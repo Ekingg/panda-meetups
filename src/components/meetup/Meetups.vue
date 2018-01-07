@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout row wrap>
+    <v-layout row wrap v-for="meetup in meetups" :key="meetup.id" class="mb-2">
       <v-flex xs12 sm10 md8 offset-sm1 offset-md2 >
         <v-card class="info">
           <v-container fluid>
@@ -10,7 +10,7 @@
               <!--3/12 of the container length for medium devices-->
               <v-flex xs5 sm4 md3>
                 <v-card-media
-                  src="http://www.spiderworks.co.za/wp-content/uploads/2017/11/Egypt.jpg"
+                  :src="meetup.imageUrl"
                   height="140px">
                   <!-- with "contain" image wouldn't cut-->
                 </v-card-media>
@@ -21,12 +21,12 @@
                   <div>
                     <!-- "--text" works for all colors
                   without "--text" will changed background color-->
-                    <h2 class="white--text">My meetup</h2>
-                    <div>8th January 2018</div>
+                    <h2 class="white--text">{{ meetup.title }}</h2>
+                    <div>{{ meetup.date }}</div>
                   </div>
                 </v-card-title>
                 <v-card-actions>
-                  <v-btn flat light>
+                  <v-btn flat light :to="'/meetups/' + meetup.id">
                     <v-icon left>arrow_forward</v-icon>
                     View meetup
                   </v-btn>
@@ -42,7 +42,12 @@
 
 <script>
   export default {
-    name: 'meetups'
+    name: 'meetups',
+    computed: {
+      meetups: function () {
+        return this.$store.getters.loadedMeetups
+      }
+    }
   }
 </script>
 

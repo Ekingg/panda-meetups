@@ -14,11 +14,13 @@
     <!--Images-->
     <v-layout>
       <v-flex xs12>
-        <v-carousel>
+        <v-carousel style="cursor: pointer">
           <v-carousel-item
             v-for="meetup in meetups"
+            @click="onLoadMeetup(meetup.id)"
             :src="meetup.imageUrl"
-            :key="meetup.id">
+            :key="meetup.id"
+          >
             <div class="imageTitle">{{ meetup.title }}</div>
           </v-carousel-item>
         </v-carousel>
@@ -35,26 +37,15 @@
 
 <script>
   export default {
-    data: function () {
-      return {
-        name: 'home',
-        meetups: [
-          {
-            imageUrl: 'https://www.tourprom.ru/site_media/images/upload/2016/11/8/countryimage/tailand.jpg',
-            id: 'someIDfromFirebase1',
-            title: 'Tailand'
-          },
-          {
-            imageUrl: 'http://www.spiderworks.co.za/wp-content/uploads/2017/11/Egypt.jpg',
-            id: 'someIDfromFirebase2',
-            title: 'Egypt'
-          },
-          {
-            imageUrl: 'http://www.kenyasafari.com/images/ol-tukai-elephants-kilimanjaro-kenya-fp.jpg',
-            id: 'someIDfromFirebase3',
-            title: 'Kenya'
-          }
-        ]
+    computed: {
+      meetups: function () {
+        return this.$store.getters.feuturedMeetups
+      }
+    },
+    methods: {
+      onLoadMeetup: function (id) {
+        //  this.$router - global vue router object
+        this.$router.push('/meetups/' + id)
       }
     }
   }
@@ -65,7 +56,7 @@
     position: absolute;
     bottom: 50px;
     color: white;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     font-size: 2em;
     padding: 15px 40px;
     border-top-left-radius: 5px;
