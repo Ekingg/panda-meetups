@@ -5,7 +5,8 @@
         <v-card>
           <v-card-text>
             <v-container>
-              <form>
+
+              <form v-on:submit.prevent="onSignUp">
 
                 <!--Email-->
                 <v-layout row>
@@ -85,6 +86,7 @@
       onSignUp: function () {
         // Vuex
         console.log({email: this.email, password: this.password, confirmPassword: this.confirmPassword})
+        this.$store.dispatch('signUserUp', {email: this.email, password: this.password})
       }
     }
   }
