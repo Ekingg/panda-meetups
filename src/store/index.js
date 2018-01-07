@@ -31,12 +31,12 @@ export const store = new Vuex.Store({
     }
   },
   mutations: { // to change state
-    createMeetup: function (state, payload) {
+    createMeetup: (state, payload) => {
       state.loadedMeetups.push(payload)
     }
   },
   actions: { // specify the mutation
-    createMeetup: function ({commit}, payload) {
+    createMeetup: ({commit}, payload) => {
       const meetup = {
         title: payload.title,
         location: payload.location,
@@ -46,24 +46,19 @@ export const store = new Vuex.Store({
         id: 'mokeid'
       }
       // Reach out to firebase and store it
+      // invoke mutation method
       commit('createMeetup', meetup)
     }
   },
   getters: {
-    loadedMeetups: function (state) {
-      return state.loadedMeetups.sort((a, b) => {
-        return a.date > b.date
+    loadedMeetups: state => state.loadedMeetups.sort((a, b) => {
+      return a.date > b.date
+    }),
+    loadedMeetup: state => (meetupId) => {
+      return state.loadedMeetups.find((meetup) => {
+        return meetup.id === meetupId
       })
     },
-    loadedMeetup: function (state) {
-      return (meetupId) => {
-        return state.loadedMeetups.find((meetup) => {
-          return meetup.id === meetupId
-        })
-      }
-    },
-    feuturedMeetups: function (state, getters) {
-      return getters.loadedMeetups.slice(0, 5)
-    }
+    feuturedMeetups: (state, getters) => getters.loadedMeetups.slice(0, 5)
   }
 })
