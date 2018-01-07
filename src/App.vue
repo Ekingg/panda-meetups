@@ -10,7 +10,6 @@
         <v-list-tile
           v-for="item in menuItems"
           :key="item.title"
-          router
           :to="item.link"
         >
           <v-list-tile-action>
@@ -25,7 +24,7 @@
     <!--Toolbar-->
     <v-toolbar dark class="light-blue accent-4">
       <v-toolbar-title>
-        <router-link to="/" class="title">
+        <router-link to="/home" class="title">
           {{ mainTitle }}
         </router-link>
       </v-toolbar-title>
@@ -39,7 +38,6 @@
           flat
           v-for="item in menuItems"
           :key="item.title"
-          router
           :to="item.link"
         >
           <!--
