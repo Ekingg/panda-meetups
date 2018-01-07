@@ -6,6 +6,7 @@ import App from './App'
 import router from './router'
 import {store} from './store'
 import DateFilter from './filters/data'
+import * as firebase from 'firebase'
 
 // register global filter
 Vue.filter('date', DateFilter)
@@ -26,5 +27,14 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  created: function () {
+    firebase.initializeApp({
+      apiKey: 'AIzaSyDTRENbX9HUKYYLVGJnGU7A9C1rPAsqnZg',
+      authDomain: 'nicetome-panda.firebaseapp.com',
+      databaseURL: 'https://nicetome-panda.firebaseio.com',
+      projectId: 'nicetome-panda',
+      storageBucket: 'nicetome-panda.appspot.com'
+    })
+  }
 })
