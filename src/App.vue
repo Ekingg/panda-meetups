@@ -63,11 +63,11 @@
     data: function () {
       return {
         sideNav: false,
-        mainTitle: 'Panda`s Meetup',
+        mainTitle: 'NiceToMe',
         menuItems: [
           {icon: 'supervisor_account', title: 'View Meetups', link: '/meetups'},
           {icon: 'room', title: 'Organize meetup', link: '/meetup/new'},
-          {icon: 'people', title: 'Profile', link: '/profile'},
+          {icon: 'settings', title: 'Profile', link: '/profile'},
           {icon: 'account_circle', title: 'Sign up', link: '/signup'},
           {icon: 'lock_open', title: 'Sign in', link: '/signin'}
         ]
