@@ -35,10 +35,7 @@ export const store = new Vuex.Store({
         date: '2018-02-26'
       }
     ],
-    user: {
-      id: 'llldasd',
-      registeredMeetups: ['someIDfromFirebase3', 'someIDfromFirebase2']
-    }
+    user: null // new user creates only with firebase auth()
   },
   mutations: { // to change state
     createMeetup: (state, payload) => {
@@ -72,7 +69,7 @@ export const store = new Vuex.Store({
               id: user.uid,
               registeredMeetups: [] // new user don't have registered meetups yet
             }
-            commit('setUser', newUser)
+            commit('setUser', newUser) // setUser - invoke mutation
           }
         )
         .catch(
@@ -91,6 +88,9 @@ export const store = new Vuex.Store({
         return meetup.id === meetupId
       })
     },
-    feuturedMeetups: (state, getters) => getters.loadedMeetups.slice(0, 5)
+    feuturedMeetups: (state, getters) => getters.loadedMeetups.slice(0, 5),
+    user: state => {
+      return state.user
+    }
   }
 })

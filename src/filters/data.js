@@ -2,7 +2,7 @@
 export default (value) => {
   const date = new Date(value)
   let options = {
-    year: 'numeric',
+    // year: 'numeric',
     month: 'long',
     day: 'numeric',
     weekday: 'long',

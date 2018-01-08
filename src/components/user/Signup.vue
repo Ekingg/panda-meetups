@@ -80,6 +80,16 @@
     computed: {
       comparePasswords: function () {
         return this.password !== this.confirmPassword ? 'Passwords do not match' : ''
+      },
+      user: function () {
+        return this.$store.getters.user
+      }
+    },
+    watch: {
+      user: function (value) {
+        if (value !== null && value !== undefined) {
+          this.$router.push('/home')
+        }
       }
     },
     methods: {
@@ -87,6 +97,7 @@
         // Vuex
         console.log({email: this.email, password: this.password, confirmPassword: this.confirmPassword})
         this.$store.dispatch('signUserUp', {email: this.email, password: this.password})
+        // signUserUp - action who invokes mutation setUser
       }
     }
   }
