@@ -38,7 +38,7 @@
                   </v-flex>
                 </v-layout>
 
-                <!--Password-->
+                <!--Confirm Password-->
                 <v-layout row>
                   <v-flex xs12>
                     <v-text-field
