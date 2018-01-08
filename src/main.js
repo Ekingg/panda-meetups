@@ -7,9 +7,10 @@ import router from './router'
 import {store} from './store'
 import DateFilter from './filters/data'
 import * as firebase from 'firebase'
-
+import AlertComp from './components/shared/Alert'
 // register global filter
 Vue.filter('date', DateFilter)
+Vue.component('app-alert', AlertComp)
 
 Vue.use(Vuetify, {
   theme: {

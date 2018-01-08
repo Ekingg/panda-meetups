@@ -5,6 +5,7 @@ import * as firebase from 'firebase'
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
+  // State ---------------------------------------------------
   state: {
     loadedMeetups: [
       {
@@ -35,16 +36,29 @@ export const store = new Vuex.Store({
         date: '2018-02-26'
       }
     ],
-    user: null // new user creates only with firebase auth()
+    user: null, // new user creates only with firebase auth()
+    loading: false,
+    error: null
   },
+  // Mutations ---------------------------------------------------
   mutations: { // to change state
     createMeetup: (state, payload) => {
       state.loadedMeetups.push(payload)
     },
     setUser: (state, payload) => {
       state.user = payload
+    },
+    setLoading: (state, payload) => {
+      state.loading = payload
+    },
+    setError: (state, payload) => {
+      state.error = payload
+    },
+    clearError: (state) => {
+      state.error = null
     }
   },
+  // Actions ---------------------------------------------------
   actions: { // specify the mutation
     createMeetup: ({commit}, payload) => {
       const meetup = {
@@ -61,10 +75,13 @@ export const store = new Vuex.Store({
     },
     // Firebase authentication
     signUserUp: ({commit}, payload) => {
+      commit('setLoading', true) // start loading process
       // return a Promise
       firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(payload.email, payload.password)
         .then(
           user => {
+            commit('setLoading', false) // we have user == loading complete
+            commit('clearError')
             const newUser = {
               id: user.uid,
               registeredMeetups: [] // new user don't have registered meetups yet
@@ -74,29 +91,39 @@ export const store = new Vuex.Store({
         )
         .catch(
           error => {
+            commit('setLoading', false) // we have error == loading complete
+            commit('setError', error) // in this case it is the specific object from firebase with message property
             console.log(error)
           }
         )
     },
     signUserIn: ({commit}, payload) => {
-      // return a Promise
+      commit('setLoading', true)
       firebase.auth().signInAndRetrieveDataWithEmailAndPassword(payload.email, payload.password)
         .then(
           user => {
+            commit('setLoading', false)
+            commit('clearError')
             const registeredUser = {
               id: user.uid,
               registeredMeetups: [] // TODO: registered meetups
             }
-            commit('setUser', registeredUser) // setUser - invoke mutation
+            commit('setUser', registeredUser)
           }
         )
         .catch(
           error => {
+            commit('setLoading', false)
+            commit('setError', error)
             console.log(error)
           }
         )
+    },
+    clearError: ({commit}) => {
+      commit('clearError')
     }
   },
+  // Getters  ---------------------------------------------------
   getters: {
     loadedMeetups: state => state.loadedMeetups.sort((a, b) => {
       return a.date > b.date
@@ -107,8 +134,15 @@ export const store = new Vuex.Store({
       })
     },
     feuturedMeetups: (state, getters) => getters.loadedMeetups.slice(0, 5),
+    // -
     user: state => {
       return state.user
+    },
+    loading: state => {
+      return state.loading
+    },
+    error: state => {
+      return state.error
     }
   }
 })
