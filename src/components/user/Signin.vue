@@ -97,6 +97,7 @@
     watch: {
       user: function (value) {
         if (value !== null && value !== undefined) {
+          this.$store.dispatch('loadMeetups')
           this.$router.push('/home')
         }
       }
@@ -104,12 +105,10 @@
     methods: {
       onSignIn: function () {
         // Vuex
-        console.log({email: this.email, password: this.password, confirmPassword: this.confirmPassword})
         this.$store.dispatch('signUserIn', {email: this.email, password: this.password})
         // signUserIn - action who invokes mutation setUser
       },
       onDismissed: function () {
-        console.log('Dismissed alert')
         this.$store.dispatch('clearError') // action
       }
     }

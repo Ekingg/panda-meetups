@@ -118,6 +118,7 @@
     watch: {
       user: function (value) {
         if (value !== null && value !== undefined) {
+          this.$store.dispatch('loadMeetups')
           this.$router.push('/home')
         }
       }
