@@ -11,27 +11,45 @@
         <v-btn large router to="/meetup/new" color="primary">Organize Meetup</v-btn>
       </v-flex>
     </v-layout>
-    <!--Images-->
+
+
+    <!--Loading circular-->
     <v-layout>
-      <v-flex xs12>
-        <v-carousel style="cursor: pointer">
-          <v-carousel-item
-            v-for="meetup in meetups"
-            @click="onLoadMeetup(meetup.id)"
-            :src="meetup.imageUrl"
-            :key="meetup.id"
-          >
-            <div class="imageTitle">{{ meetup.title }}</div>
-          </v-carousel-item>
-        </v-carousel>
-      </v-flex>
-    </v-layout>
-    <!--Join us-->
-    <v-layout class="mt-2">
       <v-flex xs12 class="text-xs-center">
-        <p>Join us for more amazing meetups!</p>
+        <v-progress-circular
+          v-if="loading"
+          indeterminate
+          color="primary"
+          :width="2"
+          :size="70"
+        >
+        </v-progress-circular>
       </v-flex>
     </v-layout>
+
+    <!--Carousel-->
+    <v-container v-if="!loading">
+      <v-layout>
+        <v-flex xs12>
+          <v-carousel style="cursor: pointer">
+            <v-carousel-item
+              v-for="meetup in meetups"
+              @click="onLoadMeetup(meetup.id)"
+              :src="meetup.imageUrl"
+              :key="meetup.id"
+            >
+              <div class="imageTitle">{{ meetup.title }}</div>
+            </v-carousel-item>
+          </v-carousel>
+        </v-flex>
+      </v-layout>
+      <!--Join us-->
+      <v-layout class="mt-2">
+        <v-flex xs12 class="text-xs-center">
+          <p>Join us for more amazing meetups!</p>
+        </v-flex>
+      </v-layout>
+    </v-container>
   </v-container>
 </template>
 
@@ -40,6 +58,9 @@
     computed: {
       meetups: function () {
         return this.$store.getters.feuturedMeetups
+      },
+      loading: function () {
+        return this.$store.getters.loading
       }
     },
     methods: {

@@ -37,5 +37,6 @@ new Vue({
       projectId: 'nicetome-panda',
       storageBucket: 'nicetome-panda.appspot.com'
     })
+    this.$store.dispatch('loadMeetups')
   }
 })

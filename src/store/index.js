@@ -7,41 +7,16 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   // State ---------------------------------------------------
   state: {
-    loadedMeetups: [
-      {
-        imageUrl: 'https://www.tourprom.ru/site_media/images/upload/2016/11/8/countryimage/tailand.jpg',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto consequuntur cumque cupiditate ea eos impedit, incidunt iste minus molestias praesentium quasi quia quidem, reiciendis rerum saepe sequi suscipit vel voluptatum.',
-        id: 'someIDfromFirebase1',
-        title: 'Tailand',
-        location: 'Some Pretty place',
-        creationDate: new Date(),
-        date: '2018-01-08'
-      },
-      {
-        imageUrl: 'http://www.spiderworks.co.za/wp-content/uploads/2017/11/Egypt.jpg',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto consequuntur cumque cupiditate ea eos impedit, incidunt iste minus molestias praesentium quasi quia quidem, reiciendis rerum saepe sequi suscipit vel voluptatum.',
-        id: 'someIDfromFirebase2',
-        title: 'Egypt',
-        location: 'Some Pretty place',
-        creationDate: new Date(),
-        date: '2018-03-13'
-      },
-      {
-        imageUrl: 'http://www.kenyasafari.com/images/ol-tukai-elephants-kilimanjaro-kenya-fp.jpg',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto consequuntur cumque cupiditate ea eos impedit, incidunt iste minus molestias praesentium quasi quia quidem, reiciendis rerum saepe sequi suscipit vel voluptatum.',
-        id: 'someIDfromFirebase3',
-        title: 'Kenya',
-        location: 'Some Pretty place',
-        creationDate: new Date(),
-        date: '2018-02-26'
-      }
-    ],
+    loadedMeetups: [],
     user: null, // new user creates only with firebase auth()
     loading: false,
     error: null
   },
   // Mutations ---------------------------------------------------
   mutations: { // to change state
+    setLoadedMeetups: (state, payload) => {
+      state.loadedMeetups = payload
+    },
     createMeetup: (state, payload) => {
       state.loadedMeetups.push(payload)
     },
@@ -60,7 +35,31 @@ export const store = new Vuex.Store({
   },
   // Actions ---------------------------------------------------
   actions: { // specify the mutation
-    // loadMeetups: () ={}
+    loadMeetups: ({commit}) => {
+      commit('setLoading', true)
+      // fetch meetup data
+      firebase.database().ref('meetup').once('value')
+        .then((data) => {
+          const meetups = []
+          const obj = data.val() // .val() method of promise ?
+          for (let key in obj) {
+            meetups.push({
+              id: key,
+              title: obj[key].title,
+              location: obj[key].location,
+              imageUrl: obj[key].imageUrl,
+              description: obj[key].description,
+              date: obj[key].date
+            })
+          }
+          commit('setLoadedMeetups', meetups)
+          commit('setLoading', false)
+        })
+        .catch((error) => {
+          console.log(error)
+          commit('setLoading', true)
+        })
+    },
     createMeetup: ({commit}, payload) => {
       const meetup = {
         title: payload.title,
