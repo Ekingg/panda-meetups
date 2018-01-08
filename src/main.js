@@ -37,6 +37,11 @@ new Vue({
       projectId: 'nicetome-panda',
       storageBucket: 'nicetome-panda.appspot.com'
     })
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.dispatch('autoSignIn', user) // if data exists in browser local storage
+      }
+    })
     this.$store.dispatch('loadMeetups')
   }
 })
