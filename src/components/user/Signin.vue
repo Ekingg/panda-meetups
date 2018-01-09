@@ -79,10 +79,12 @@
 <script>
   export default {
     name: 'signin',
-    data: () => ({
-      email: '',
-      password: ''
-    }),
+    data: function () {
+      return {
+        email: '',
+        password: ''
+      }
+    },
     computed: {
       user: function () {
         return this.$store.getters.user

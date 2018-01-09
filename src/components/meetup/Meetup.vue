@@ -1,15 +1,41 @@
 <template>
   <v-container>
-    <v-layout row wrap>
+
+    <!--Loading circular-->
+    <v-layout row wrap v-if="loading">
+      <v-flex xs12 class="text-xs-center">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+          :width="2"
+          :size="70"
+        >
+        </v-progress-circular>
+      </v-flex>
+    </v-layout>
+
+    <!--Meetup-->
+    <v-layout row wrap v-else="!loading">
       <v-flex xs12>
         <v-card>
           <v-card-title>
+            <!--Title-->
             <h3 class="primary--text">{{ meetup.title }}</h3>
+            <!--Edit meetup details dialog-->
+            <template v-if="userIsCreator">
+              <v-spacer></v-spacer>
+              <!--:meetup - props from EditMeetupDetailsDialog.vue-->
+              <app-edit-meetup-details-dialog :meetup="meetup"></app-edit-meetup-details-dialog>
+            </template>
           </v-card-title>
+
+          <!--Image-->
           <v-card-media
             :src="meetup.imageUrl"
             height="400px">
           </v-card-media>
+
+          <!--Full description-->
           <v-card-text class="pb-0">
             <div>
               <b class="secondary--text">
@@ -23,10 +49,13 @@
               <p>{{ meetup.description }}</p>
             </div>
           </v-card-text>
+
+          <!--Register-->
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn class="primary mr-3 mb-2">Register</v-btn>
           </v-card-actions>
+
         </v-card>
       </v-flex>
     </v-layout>
@@ -40,6 +69,18 @@
     computed: {
       meetup: function () {
         return this.$store.getters.loadedMeetup(this.id)
+      },
+      userIsAuthenticated: function () {
+        return this.$store.getters.user !== null && this.$store.getters.user !== undefined
+      },
+      userIsCreator: function () {
+        if (!this.userIsAuthenticated) {
+          return false
+        }
+        return this.$store.getters.user.id === this.meetup.creatorId
+      },
+      loading: function () {
+        return this.$store.getters.loading
       }
     }
   }

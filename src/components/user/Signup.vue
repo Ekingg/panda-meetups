@@ -96,11 +96,13 @@
 <script>
   export default {
     name: 'signup',
-    data: () => ({
-      email: '',
-      password: '',
-      confirmPassword: ''
-    }),
+    data: function () {
+      return {
+        email: '',
+        password: '',
+        confirmPassword: ''
+      }
+    },
     computed: {
       comparePasswords: function () {
         return this.password !== this.confirmPassword ? 'Passwords do not match' : ''
