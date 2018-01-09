@@ -40,14 +40,24 @@
           <!--Image Url-->
           <v-layout row>
             <v-flex xs12 sm6 offset-sm3>
-              <v-text-field
-                name="imageUrl"
-                label="Image URL"
-                id="image-url"
-                v-model="imageUrl"
-                required
+              <!--Just link variant-->
+              <!--
+                            <v-text-field
+                              name="imageUrl"
+                              label="Image URL"
+                              id="image-url"
+                              v-model="imageUrl"
+                              required
+                            >
+                            </v-text-field>-->
+              <v-btn raised class="primary" v-on:click="onPickFile">Upload Image</v-btn>
+              <input
+                type="file"
+                style="display: none;"
+                ref="fileInput"
+                accept="image/*"
+                v-on:change="onFilePicked"
               >
-              </v-text-field>
             </v-flex>
           </v-layout>
 
@@ -117,6 +127,7 @@
         title: '',
         location: '',
         imageUrl: '',
+        image: null, // it will be raw image file uploaded by user,
         description: '',
         creationDate: new Date(),
         date: new Date().toISOString().slice(0, 10), // default values
@@ -159,16 +170,36 @@
         if (!this.formIsValid) {
           return
         }
+        if (!this.image) {
+          return
+        }
         const meetUpData = {
           title: this.title,
           location: this.location,
-          imageUrl: this.imageUrl,
+          image: this.image,
           description: this.description,
           date: this.submittableDateTime
         }
         console.log(meetUpData)
         this.$store.dispatch('createMeetup', meetUpData)
         this.$router.push('/meetups')
+      },
+      onPickFile: function () {
+        // this.$refs - gives for as all ref on this component
+        this.$refs.fileInput.click()
+      },
+      onFilePicked: function (event) {
+        const files = event.target.files // files[0] because it may be multiselect of files, take first
+        const filename = files[0].name // name provided by native js
+        if (filename.indexOf('.') <= 0) { // means what file have extension
+          return alert('Please, pick a valid file')
+        }
+        const fileReader = new FileReader() // native js future for client file work
+        fileReader.addEventListener('load', () => {
+          this.imageUrl = fileReader.result
+        })
+        fileReader.readAsDataURL(files[0])
+        this.image = files[0]
       }
     }
   }

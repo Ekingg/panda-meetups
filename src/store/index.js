@@ -38,7 +38,7 @@ export const store = new Vuex.Store({
     loadMeetups: ({commit}) => {
       commit('setLoading', true)
       // fetch meetup data
-      firebase.database().ref('meetup').once('value')
+      firebase.database().ref('meetups').once('value')
         .then((data) => {
           const meetups = []
           const obj = data.val() // .val() method of promise ?
@@ -65,7 +65,6 @@ export const store = new Vuex.Store({
       const meetup = {
         title: payload.title,
         location: payload.location,
-        imageUrl: payload.imageUrl,
         description: payload.description,
         date: payload.date.toISOString(), // because date object cant be stored into firebase
         creatorId: getters.user.id
@@ -73,14 +72,33 @@ export const store = new Vuex.Store({
       }
       // ref('meetup' will create if not exists JSON with name 'meetup'
       // push - for writing new data
-      firebase.database().ref('meetup').push(meetup)
+      let imageUrl
+      let key
+      firebase.database().ref('meetups').push(meetup)
+      // chain of promises --> then, then, then, catch
         .then((data) => {
-          const key = data.key // Promise from firebase have unic id in key property
+          key = data.key // Promise from firebase have unic id in key property
+          // For upload image src into firebase storage:
+          // 1. We upload all (except img binary) into firebase database
+          // 2. They give as some generated unic id - key
+          // 3. With it key we add img binary into firebase storage
+          return key
+        })
+        .then((key) => {
+          const filename = payload.image.name
+          const ext = filename.slice(filename.lastIndexOf('.'))
+          return firebase.storage().ref('meetups/' + key + '.' + ext).put(payload.image)
+        })
+        .then(fileData => {
+          imageUrl = fileData.metadata.downloadURLs[0]
+          return firebase.database().ref('meetups').child(key).update({imageUrl: imageUrl})
+        })
+        .then(() => {
           commit('createMeetup', {
             ...meetup,
+            imageUrl: imageUrl,
             id: key
           })
-          console.log(data)
         })
         .catch((error) => {
           console.log(error)
