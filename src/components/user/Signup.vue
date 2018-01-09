@@ -127,8 +127,12 @@
     },
     methods: {
       onSignUp: function () {
-        // Vuex
-        console.log({email: this.email, password: this.password, confirmPassword: this.confirmPassword})
+        if (this.password !== this.confirmPassword) {
+          const error = {message: 'Passwords do not match'}
+          return this.$store.dispatch('setError', error)
+        } else {
+          this.$store.dispatch('clearError')
+        }
         this.$store.dispatch('signUserUp', {email: this.email, password: this.password})
         // signUserUp - action who invokes mutation setUser
       },
