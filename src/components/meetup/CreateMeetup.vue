@@ -157,13 +157,10 @@
         }
       },
       submittableDateTime: function () {
-        console.log(this.date)
-        return new Date(
-          this.date.slice(0, 4),
-          parseInt(this.date.slice(5, 7)) - 1,
-          parseInt(this.date.slice(8, 10)),
-          this.time.slice(0, 2),
-          this.time.slice(3, 5))
+        const date = new Date(this.date)
+        date.setHours(this.time.match(/^(\d+)/)[1])
+        date.setMinutes(this.time.match(/:(\d+)/)[1])
+        return date
       }
     },
     methods: {

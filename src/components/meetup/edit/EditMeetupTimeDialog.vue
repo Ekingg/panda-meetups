@@ -1,7 +1,7 @@
 <template>
   <v-dialog width="350px" persistent v-model="editDialog">
     <v-btn accent slot="activator">
-      Edit Date
+      Edit Time
     </v-btn>
     <v-card>
       <v-container>
@@ -9,7 +9,7 @@
         <!--Title-->
         <v-layout row wrap>
           <v-flex xs12>
-            <v-card-title><h3 class="secondary--text">Edit Meetup Date</h3></v-card-title>
+            <v-card-title><h3 class="secondary--text">Edit Meetup Time</h3></v-card-title>
           </v-flex>
         </v-layout>
 
@@ -18,7 +18,7 @@
         <!--Date picker-->
         <v-layout row wrap>
           <v-flex xs12>
-            <v-date-picker v-model="editableDate" style="width: 100%" action>
+            <v-time-picker v-model="editableTime" style="width: 100%" action>
               <template slot-scope="{save, cancel}">
                 <v-btn
                   flat
@@ -35,8 +35,8 @@
                   Save
                 </v-btn>
               </template>
-            </v-date-picker>
-            <p>{{editableDate}}</p>
+            </v-time-picker>
+            <p>{{editableTime}}</p>
           </v-flex>
         </v-layout>
 
@@ -52,15 +52,14 @@
     data: function () {
       return {
         editDialog: false,
-        editableDate: null
+        editableTime: null
       }
     },
     methods: {
       onSaveChanges: function () {
-        const prevDate = new Date(this.meetup.date)
-        const newDate = new Date(this.editableDate)
-        newDate.setHours(prevDate.getHours())
-        newDate.setMinutes(prevDate.getMinutes())
+        const newDate = new Date(this.meetup.date)
+        newDate.setHours(this.editableTime.match(/^(\d+)/)[1])
+        newDate.setMinutes(this.editableTime.match(/:(\d+)/)[1])
         this.$store.dispatch('updateMeetupData', {
           id: this.meetup.id,
           date: newDate
@@ -68,7 +67,9 @@
       }
     },
     created: function () {
-      this.editableDate = new Date(this.meetup.date).toISOString().slice(0, 10)
+      const hours = new Date(this.meetup.date).getHours()
+      const minutes = new Date(this.meetup.date).getMinutes()
+      this.editableTime = hours + ':' + minutes
     }
   }
 </script>

@@ -49,6 +49,7 @@
                 <template v-if="userIsCreator">
                   <!--:meetup - props from EditMeetupDateDialog.vue-->
                   <app-edit-meetup-date-dialog :meetup="meetup"></app-edit-meetup-date-dialog>
+                  <app-edit-meetup-time-dialog :meetup="meetup"></app-edit-meetup-time-dialog>
                 </template>
 
               </b>
