@@ -14,6 +14,19 @@ export const store = new Vuex.Store({
   },
   // Mutations ---------------------------------------------------
   mutations: { // to change state
+    registerUserForMeetup: (state, payload) => {
+      const id = payload.id
+      if (state.user.registeredMeetups.findIndex(meetup => meetup.id === id) >= 0) {
+        return
+      }
+      state.user.registeredMeetups.push(id)
+      state.user.fbKeys[id] = payload.fbKey
+    },
+    unregisterUserFromMeetup: (state, payload) => {
+      const registeredMeetups = state.user.registeredMeetups
+      registeredMeetups.splice(registeredMeetups.findIndex(meetup => meetup.id === payload), 1)
+      Reflect.deleteProperty(state.user.fbKeys, payload)
+    },
     setLoadedMeetups: (state, payload) => {
       state.loadedMeetups = payload
     },
@@ -49,6 +62,40 @@ export const store = new Vuex.Store({
   },
   // Actions ---------------------------------------------------
   actions: { // specify the mutation
+    registerUserForMeetup: ({commit, getters}, payload) => {
+      commit('setLoading', true)
+      const user = getters.user
+      firebase.database().ref('/users/' + user.id).child('/registrations/')
+        .push(payload)
+        .then(data => {
+          commit('setLoading', false)
+          console.log(data)
+          console.log(payload)
+          commit('registerUserForMeetup', {id: payload, fbKey: data.key})
+        })
+        .catch(error => {
+          console.log(error)
+          commit('setLoading', false)
+        })
+    },
+    unregisterUserFromMeetup: ({commit, getters}, payload) => {
+      commit('setLoading', true)
+      const user = getters.user
+      if (!user.fbKeys) {
+        return
+      }
+      const fbKey = user.fbKeys[payload]
+      firebase.database().ref('/users/' + user.id + '/registrations/').child(fbKey)
+        .remove()
+        .then(() => {
+          commit('setLoading', false)
+          commit('unregisterUserFromMeetup', payload)
+        })
+        .catch(error => {
+          console.log(error)
+          commit('setLoading', false)
+        })
+    },
     loadMeetups: ({commit}) => {
       commit('setLoading', true)
       // fetch meetup data
@@ -152,7 +199,8 @@ export const store = new Vuex.Store({
             commit('clearError')
             const newUser = {
               id: user.uid,
-              registeredMeetups: [] // new user don't have registered meetups yet
+              registeredMeetups: [], // new user don't have registered meetups yet
+              fbKeys: {}
             }
             commit('setUser', newUser) // setUser - invoke mutation
           }
@@ -175,7 +223,8 @@ export const store = new Vuex.Store({
             commit('clearError')
             const registeredUser = {
               id: user.uid,
-              registeredMeetups: [] // TODO: registered meetups
+              registeredMeetups: [], // initially empty< but later will loaded from firebase
+              fbKeys: {}
             }
             commit('setUser', registeredUser)
           }
@@ -188,40 +237,53 @@ export const store = new Vuex.Store({
           }
         )
     },
-    clearError: ({commit}) => {
-      commit('clearError')
-    },
-    setError: ({commit}, payload) => {
-      commit('setError', payload)
-    },
-    autoSignIn: ({commit}, payload) => {
-      commit('setUser', {id: payload.uid, registeredMeetups: []})
-    },
-    logout: ({commit}) => {
-      firebase.auth().signOut()
-      commit('setUser', null)
-    }
+    clearError:
+      ({commit}) => {
+        commit('clearError')
+      },
+    setError:
+      ({commit}, payload) => {
+        commit('setError', payload)
+      },
+    autoSignIn:
+      ({commit}, payload) => {
+        commit('setUser', {
+          id: payload.uid,
+          registeredMeetups: [],
+          fbKeys: {}
+        })
+      },
+    logout:
+      ({commit}) => {
+        firebase.auth().signOut()
+        commit('setUser', null)
+      }
   },
-  // Getters  ---------------------------------------------------
+// Getters  ---------------------------------------------------
   getters: {
     loadedMeetups: state => state.loadedMeetups.sort((a, b) => {
       return a.date > b.date
     }),
-    loadedMeetup: state => (meetupId) => {
-      return state.loadedMeetups.find((meetup) => {
-        return meetup.id === meetupId
-      })
-    },
-    feuturedMeetups: (state, getters) => getters.loadedMeetups.slice(0, 5),
+    loadedMeetup:
+      state => (meetupId) => {
+        return state.loadedMeetups.find((meetup) => {
+          return meetup.id === meetupId
+        })
+      },
+    feuturedMeetups:
+      (state, getters) => getters.loadedMeetups.slice(0, 5),
     // -
-    user: state => {
-      return state.user
-    },
-    loading: state => {
-      return state.loading
-    },
-    error: state => {
-      return state.error
-    }
+    user:
+      state => {
+        return state.user
+      },
+    loading:
+      state => {
+        return state.loading
+      },
+    error:
+      state => {
+        return state.error
+      }
   }
 })

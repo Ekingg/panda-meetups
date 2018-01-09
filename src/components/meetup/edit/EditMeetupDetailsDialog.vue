@@ -1,4 +1,5 @@
 <template>
+  <!--persistent means on the top of the screen-->
   <v-dialog width="350px" persistent v-model="editDialog">
     <v-btn fab accent slot="activator">
       <v-icon>edit</v-icon>

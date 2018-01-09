@@ -11,17 +11,20 @@ import AlertComp from './components/shared/Alert'
 import EditMeetupDetailsDialog from './components/meetup/edit/EditMeetupDetailsDialog'
 import EditMeetupDateDialog from './components/meetup/edit/EditMeetupDateDialog'
 import EditMeetupTimeDialog from './components/meetup/edit/EditMeetupTimeDialog'
+import RegistrationDialog from './components/meetup/registration/RegistrationDialog'
 // register global filter
 Vue.filter('date', DateFilter)
 Vue.component('app-alert', AlertComp)
 Vue.component('app-edit-meetup-details-dialog', EditMeetupDetailsDialog)
 Vue.component('app-edit-meetup-date-dialog', EditMeetupDateDialog)
 Vue.component('app-edit-meetup-time-dialog', EditMeetupTimeDialog)
+Vue.component('app-meetup-register-dialog', RegistrationDialog)
 
 Vue.use(Vuetify, {
   theme: {
     primary: '#0091ea',
     secondary: '#707b82',
+    accept: '#19be6b',
     accent: '#8c9eff',
     error: '#b71c1c'
   }

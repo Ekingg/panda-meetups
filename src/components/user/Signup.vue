@@ -137,7 +137,6 @@
         // signUserUp - action who invokes mutation setUser
       },
       onDismissed: function () {
-        console.log('Dismissed alert')
         this.$store.dispatch('clearError') // action
       }
     }

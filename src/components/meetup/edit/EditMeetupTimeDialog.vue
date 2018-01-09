@@ -1,4 +1,5 @@
 <template>
+  <!--persistent means on the top of the screen-->
   <v-dialog width="350px" persistent v-model="editDialog">
     <v-btn accent slot="activator">
       Edit Time

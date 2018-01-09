@@ -178,7 +178,6 @@
           description: this.description,
           date: this.submittableDateTime
         }
-        console.log(meetUpData)
         this.$store.dispatch('createMeetup', meetUpData)
         this.$router.push('/meetups')
       },
