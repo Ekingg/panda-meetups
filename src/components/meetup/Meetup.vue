@@ -45,6 +45,12 @@
                   {{ meetup.date | date }}
                 </p>
 
+                <!--Edit Date Button-->
+                <template v-if="userIsCreator">
+                  <!--:meetup - props from EditMeetupDateDialog.vue-->
+                  <app-edit-meetup-date-dialog :meetup="meetup"></app-edit-meetup-date-dialog>
+                </template>
+
               </b>
               <p>{{ meetup.description }}</p>
             </div>

@@ -38,6 +38,7 @@
           </v-flex>
         </v-layout>
 
+        <!--Close & Save Buttons-->
         <v-layout row wrap>
           <v-flex xs12>
             <v-card-actions>

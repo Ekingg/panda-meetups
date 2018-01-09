@@ -9,10 +9,12 @@ import DateFilter from './filters/data'
 import * as firebase from 'firebase'
 import AlertComp from './components/shared/Alert'
 import EditMeetupDetailsDialog from './components/meetup/edit/EditMeetupDetailsDialog'
+import EditMeetupDateDialog from './components/meetup/edit/EditMeetupDateDialog'
 // register global filter
 Vue.filter('date', DateFilter)
 Vue.component('app-alert', AlertComp)
 Vue.component('app-edit-meetup-details-dialog', EditMeetupDetailsDialog)
+Vue.component('app-edit-meetup-date-dialog', EditMeetupDateDialog)
 
 Vue.use(Vuetify, {
   theme: {

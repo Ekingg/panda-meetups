@@ -20,7 +20,7 @@ export const store = new Vuex.Store({
     createMeetup: (state, payload) => {
       state.loadedMeetups.push(payload)
     },
-    updateMeetupDate: (state, payload) => {
+    updateMeetupData: (state, payload) => {
       const meetup = state.loadedMeetups.find((meetup) => {
         return meetup.id === payload.id
       })
@@ -133,7 +133,7 @@ export const store = new Vuex.Store({
       firebase.database().ref('meetups').child(payload.id).update(updateObj)
         .then(() => {
           commit('setLoading', false)
-          commit('updateMeetupDate', payload)
+          commit('updateMeetupData', payload)
         })
         .catch((error) => {
           console.log(error)
