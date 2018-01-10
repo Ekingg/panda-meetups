@@ -86,33 +86,39 @@
       }
     },
     computed: {
-      user: function () {
-        return this.$store.getters.user
-      },
-      error: function () {
-        return this.$store.getters.error
-      },
-      loading: function () {
-        return this.$store.getters.loading
-      }
+      user:
+        function () {
+          return this.$store.getters.user
+        },
+      error:
+        function () {
+          return this.$store.getters.error
+        },
+      loading:
+        function () {
+          return this.$store.getters.loading
+        }
     },
     watch: {
-      user: function (value) {
-        if (value !== null && value !== undefined) {
-          this.$store.dispatch('loadMeetups')
-          this.$router.push('/home')
+      user:
+        function (value) {
+          if (value !== null && value !== undefined) {
+            this.$store.dispatch('loadMeetups')
+            this.$router.push('/home')
+          }
         }
-      }
     },
     methods: {
-      onSignIn: function () {
-        // Vuex
-        this.$store.dispatch('signUserIn', {email: this.email, password: this.password})
-        // signUserIn - action who invokes mutation setUser
-      },
-      onDismissed: function () {
-        this.$store.dispatch('clearError') // action
-      }
+      onSignIn:
+        function () {
+          // Vuex
+          this.$store.dispatch('signUserIn', {email: this.email, password: this.password})
+          // signUserIn - action who invokes mutation setUser
+        },
+      onDismissed:
+        function () {
+          this.$store.dispatch('clearError') // action
+        }
     }
   }
 </script>

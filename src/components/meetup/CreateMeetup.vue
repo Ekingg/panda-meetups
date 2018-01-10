@@ -123,81 +123,88 @@
 <script>
   export default {
     name: 'create-meetup',
-    data: function () {
-      return {
-        title: '',
-        location: '',
-        imageUrl: '',
-        image: null, // it will be raw image file uploaded by user,
-        description: '',
-        creationDate: new Date(),
-        date: new Date().toISOString().slice(0, 10), // default values
-        time: new Date().toString().slice(16, 21)
-      }
-    },
-    computed: {
-      formIsValid: function () {
-        return this.title !== '' &&
-          this.location !== '' &&
-          this.imageUrl !== '' &&
-          this.description !== ''
-      },
-      imageHeight: function () {
-        switch (this.$vuetify.breakpoint.name) {
-          case 'xs':
-            return '150px'
-          case 'sm':
-            return '200px'
-          case 'md':
-            return '250px'
-          case 'lg':
-            return '300px'
-          case 'xl':
-            return '400px'
+    data:
+      function () {
+        return {
+          title: '',
+          location: '',
+          imageUrl: '',
+          image: null, // it will be raw image file uploaded by user,
+          description: '',
+          creationDate: new Date(),
+          date: new Date().toISOString().slice(0, 10), // default values
+          time: new Date().toString().slice(16, 21)
         }
       },
-      submittableDateTime: function () {
-        const date = new Date(this.date)
-        date.setHours(this.time.match(/^(\d+)/)[1])
-        date.setMinutes(this.time.match(/:(\d+)/)[1])
-        return date
-      }
+    computed: {
+      formIsValid:
+        function () {
+          return this.title !== '' &&
+            this.location !== '' &&
+            this.imageUrl !== '' &&
+            this.description !== ''
+        },
+      imageHeight:
+        function () {
+          switch (this.$vuetify.breakpoint.name) {
+            case 'xs':
+              return '150px'
+            case 'sm':
+              return '200px'
+            case 'md':
+              return '250px'
+            case 'lg':
+              return '300px'
+            case 'xl':
+              return '400px'
+          }
+        },
+      submittableDateTime:
+        function () {
+          const date = new Date(this.date)
+          date.setHours(this.time.match(/^(\d+)/)[1])
+          date.setMinutes(this.time.match(/:(\d+)/)[1])
+          return date
+        }
     },
     methods: {
-      onCreateMeetup: function () {
-        if (!this.formIsValid) {
-          return
+      onCreateMeetup:
+        function () {
+          if (!this.formIsValid) {
+            return
+          }
+          if (!this.image) {
+            return
+          }
+          const meetUpData = {
+            title: this.title,
+            location: this.location,
+            image: this.image,
+            description: this.description,
+            date: this.submittableDateTime
+          }
+          this.$store.dispatch('createMeetup', meetUpData)
+          this.$router.push('/meetups')
+        },
+      onPickFile:
+        function () {
+          // this.$refs - gives for as all ref on this component
+          this.$refs.fileInput.click()
+        },
+      onFilePicked:
+        function (event) {
+          const files = event.target.files // files[0] because it may be multiselect of files, take first
+          const filename = files[0].name // name provided by native js
+          if (filename.indexOf('.') <= 0) { // means what file have extension
+            return alert('Please, pick a valid file')
+          }
+          const fileReader = new FileReader() // native js future for client file work
+          fileReader.addEventListener('load', () => {
+            this.imageUrl = fileReader.result
+          })
+          fileReader.readAsDataURL(files[0])
+          this.image = files[0]
         }
-        if (!this.image) {
-          return
-        }
-        const meetUpData = {
-          title: this.title,
-          location: this.location,
-          image: this.image,
-          description: this.description,
-          date: this.submittableDateTime
-        }
-        this.$store.dispatch('createMeetup', meetUpData)
-        this.$router.push('/meetups')
-      },
-      onPickFile: function () {
-        // this.$refs - gives for as all ref on this component
-        this.$refs.fileInput.click()
-      },
-      onFilePicked: function (event) {
-        const files = event.target.files // files[0] because it may be multiselect of files, take first
-        const filename = files[0].name // name provided by native js
-        if (filename.indexOf('.') <= 0) { // means what file have extension
-          return alert('Please, pick a valid file')
-        }
-        const fileReader = new FileReader() // native js future for client file work
-        fileReader.addEventListener('load', () => {
-          this.imageUrl = fileReader.result
-        })
-        fileReader.readAsDataURL(files[0])
-        this.image = files[0]
-      }
     }
   }
 </script>

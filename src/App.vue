@@ -87,28 +87,31 @@
       }
     },
     computed: {
-      isAuthenticatedUser: function () {
-        return this.$store.getters.user !== null && this.$store.getters.user !== undefined
-      },
-      menuItems: function () {
-        let menuItems = [
-          {icon: 'account_circle', title: 'Sign up', link: '/signup'},
-          {icon: 'lock_open', title: 'Sign in', link: '/signin'}
-        ]
-        if (this.isAuthenticatedUser) {
-          menuItems = [
-            {icon: 'supervisor_account', title: 'View Meetups', link: '/meetups'},
-            {icon: 'room', title: 'Organize meetup', link: '/meetup/new'},
-            {icon: 'settings', title: 'Profile', link: '/profile'}
+      isAuthenticatedUser:
+        function () {
+          return this.$store.getters.user !== null && this.$store.getters.user !== undefined
+        },
+      menuItems:
+        function () {
+          let menuItems = [
+            {icon: 'account_circle', title: 'Sign up', link: '/signup'},
+            {icon: 'lock_open', title: 'Sign in', link: '/signin'}
           ]
+          if (this.isAuthenticatedUser) {
+            menuItems = [
+              {icon: 'supervisor_account', title: 'View Meetups', link: '/meetups'},
+              {icon: 'room', title: 'Organize meetup', link: '/meetup/new'},
+              {icon: 'settings', title: 'Profile', link: '/profile'}
+            ]
+          }
+          return menuItems
         }
-        return menuItems
-      }
     },
     methods: {
-      onLogout: function () {
-        this.$store.dispatch('logout')
-      }
+      onLogout:
+        function () {
+          this.$store.dispatch('logout')
+        }
     }
   }
 </script>

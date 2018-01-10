@@ -45,28 +45,31 @@
   export default {
     name: 'registration-dialog',
     props: ['meetupId'],
-    data: function () {
-      return {
-        registerDialog: false
-      }
-    },
+    data:
+      function () {
+        return {
+          registerDialog: false
+        }
+      },
     computed: {
-      isRegisteredUser: function () {
-        return this.$store.getters.user.registeredMeetups.findIndex(meetupId => {
-          return meetupId === this.meetupId
-        }) >= 0
-      }
+      isRegisteredUser:
+        function () {
+          return this.$store.getters.user.registeredMeetups.findIndex(meetupId => {
+            return meetupId === this.meetupId
+          }) >= 0
+        }
     },
     methods: {
-      onAgree: function () {
-        if (this.isRegisteredUser) {
-          console.log('Starting unregistration')
-          this.$store.dispatch('unregisterUserFromMeetup', this.meetupId)
-        } else {
-          console.log('Starting registration')
-          this.$store.dispatch('registerUserForMeetup', this.meetupId)
+      onAgree:
+        function () {
+          if (this.isRegisteredUser) {
+            console.log('Starting unregistration')
+            this.$store.dispatch('unregisterUserFromMeetup', this.meetupId)
+          } else {
+            console.log('Starting registration')
+            this.$store.dispatch('registerUserForMeetup', this.meetupId)
+          }
         }
-      }
     }
   }
 </script>

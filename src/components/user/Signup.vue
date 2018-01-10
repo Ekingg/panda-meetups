@@ -96,49 +96,57 @@
 <script>
   export default {
     name: 'signup',
-    data: function () {
-      return {
-        email: '',
-        password: '',
-        confirmPassword: ''
-      }
-    },
+    data:
+      function () {
+        return {
+          email: '',
+          password: '',
+          confirmPassword: ''
+        }
+      },
     computed: {
-      comparePasswords: function () {
-        return this.password !== this.confirmPassword ? 'Passwords do not match' : ''
-      },
-      user: function () {
-        return this.$store.getters.user
-      },
-      error: function () {
-        return this.$store.getters.error
-      },
-      loading: function () {
-        return this.$store.getters.loading
-      }
+      comparePasswords:
+        function () {
+          return this.password !== this.confirmPassword ? 'Passwords do not match' : ''
+        },
+      user:
+        function () {
+          return this.$store.getters.user
+        },
+      error:
+        function () {
+          return this.$store.getters.error
+        },
+      loading:
+        function () {
+          return this.$store.getters.loading
+        }
     },
     watch: {
-      user: function (value) {
-        if (value !== null && value !== undefined) {
-          this.$store.dispatch('loadMeetups')
-          this.$router.push('/home')
+      user:
+        function (value) {
+          if (value !== null && value !== undefined) {
+            this.$store.dispatch('loadMeetups')
+            this.$router.push('/home')
+          }
         }
-      }
     },
     methods: {
-      onSignUp: function () {
-        if (this.password !== this.confirmPassword) {
-          const error = {message: 'Passwords do not match'}
-          return this.$store.dispatch('setError', error)
-        } else {
-          this.$store.dispatch('clearError')
+      onSignUp:
+        function () {
+          if (this.password !== this.confirmPassword) {
+            const error = {message: 'Passwords do not match'}
+            return this.$store.dispatch('setError', error)
+          } else {
+            this.$store.dispatch('clearError')
+          }
+          this.$store.dispatch('signUserUp', {email: this.email, password: this.password})
+          // signUserUp - action who invokes mutation setUser
+        },
+      onDismissed:
+        function () {
+          this.$store.dispatch('clearError') // action
         }
-        this.$store.dispatch('signUserUp', {email: this.email, password: this.password})
-        // signUserUp - action who invokes mutation setUser
-      },
-      onDismissed: function () {
-        this.$store.dispatch('clearError') // action
-      }
     }
   }
 </script>

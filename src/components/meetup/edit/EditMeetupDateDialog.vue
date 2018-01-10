@@ -50,27 +50,30 @@
   export default {
     name: 'edit-meetup-date-dialog',
     props: ['meetup'],
-    data: function () {
-      return {
-        editDialog: false,
-        editableDate: null
-      }
-    },
+    data:
+      function () {
+        return {
+          editDialog: false,
+          editableDate: null
+        }
+      },
     methods: {
-      onSaveChanges: function () {
-        const prevDate = new Date(this.meetup.date)
-        const newDate = new Date(this.editableDate)
-        newDate.setHours(prevDate.getHours())
-        newDate.setMinutes(prevDate.getMinutes())
-        this.$store.dispatch('updateMeetupData', {
-          id: this.meetup.id,
-          date: newDate
-        })
-      }
+      onSaveChanges:
+        function () {
+          const prevDate = new Date(this.meetup.date)
+          const newDate = new Date(this.editableDate)
+          newDate.setHours(prevDate.getHours())
+          newDate.setMinutes(prevDate.getMinutes())
+          this.$store.dispatch('updateMeetupData', {
+            id: this.meetup.id,
+            date: newDate
+          })
+        }
     },
-    created: function () {
-      this.editableDate = new Date(this.meetup.date).toISOString().slice(0, 10)
-    }
+    created:
+      function () {
+        this.editableDate = new Date(this.meetup.date).toISOString().slice(0, 10)
+      }
   }
 </script>
 

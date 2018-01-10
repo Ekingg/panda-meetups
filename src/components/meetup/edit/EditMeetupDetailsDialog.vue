@@ -58,25 +58,27 @@
   export default {
     name: 'edit-meetup-details-dialog',
     props: ['meetup'],
-    data: function () {
-      return {
-        editDialog: false,
-        editedTitle: this.meetup.title,
-        editedDescription: this.meetup.description
-      }
-    },
-    methods: {
-      onSaveChanges: function () {
-        if (this.editedTitle.trim() === '' || this.editedDescription.trim() === '') {
-          return
+    data:
+      function () {
+        return {
+          editDialog: false,
+          editedTitle: this.meetup.title,
+          editedDescription: this.meetup.description
         }
-        this.editDialog = false
-        this.$store.dispatch('updateMeetupData', {
-          id: this.meetup.id,
-          title: this.editedTitle,
-          description: this.editedDescription
-        })
-      }
+      },
+    methods: {
+      onSaveChanges:
+        function () {
+          if (this.editedTitle.trim() === '' || this.editedDescription.trim() === '') {
+            return
+          }
+          this.editDialog = false
+          this.$store.dispatch('updateMeetupData', {
+            id: this.meetup.id,
+            title: this.editedTitle,
+            description: this.editedDescription
+          })
+        }
     }
   }
 </script>

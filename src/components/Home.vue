@@ -56,18 +56,21 @@
 <script>
   export default {
     computed: {
-      meetups: function () {
-        return this.$store.getters.feuturedMeetups
-      },
-      loading: function () {
-        return this.$store.getters.loading
-      }
+      meetups:
+        function () {
+          return this.$store.getters.feuturedMeetups
+        },
+      loading:
+        function () {
+          return this.$store.getters.loading
+        }
     },
     methods: {
-      onLoadMeetup: function (id) {
-        //  this.$router - global vue router object
-        this.$router.push('/meetups/' + id)
-      }
+      onLoadMeetup:
+        function (id) {
+          //  this.$router - global vue router object
+          this.$router.push('/meetups/' + id)
+        }
     }
   }
 </script>
