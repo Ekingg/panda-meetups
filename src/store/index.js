@@ -69,8 +69,6 @@ export const store = new Vuex.Store({
         .push(payload)
         .then(data => {
           commit('setLoading', false)
-          console.log(data)
-          console.log(payload)
           commit('registerUserForMeetup', {id: payload, fbKey: data.key})
         })
         .catch(error => {
@@ -252,6 +250,33 @@ export const store = new Vuex.Store({
           registeredMeetups: [],
           fbKeys: {}
         })
+      },
+    fetchUserData:
+      ({commit, getters}) => {
+        commit('setLoading', true)
+        firebase.database().ref('/users/' + getters.user.id + '/registrations/').once('value')
+          .then(
+            (data) => {
+              const dataPairs = data.val() // val() - to transform onto js valid form object!!
+              let registeredMeetups = []
+              let swappedPairs = {}
+              for (let key in dataPairs) {
+                registeredMeetups.push(dataPairs[key]) // dataPairs[key] = meetupId
+                swappedPairs[dataPairs[key]] = key
+              }
+              const updatedUser = {
+                id: getters.user.id,
+                registeredMeetups: registeredMeetups,
+                fbKeys: swappedPairs
+              }
+              commit('setLoading', false)
+              commit('setUser', updatedUser)
+            })
+          .catch(
+            error => {
+              commit('setLoading', false)
+              console.log(error)
+            })
       },
     logout:
       ({commit}) => {

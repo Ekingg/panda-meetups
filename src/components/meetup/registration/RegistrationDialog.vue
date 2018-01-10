@@ -52,18 +52,18 @@
     },
     computed: {
       isRegisteredUser: function () {
-        if (this.$store.getters.user) {
-          return this.$store.getters.user.registeredMeetups.findIndex(meetupId => {
-            return meetupId === this.meetupId
-          }) >= 0
-        }
+        return this.$store.getters.user.registeredMeetups.findIndex(meetupId => {
+          return meetupId === this.meetupId
+        }) >= 0
       }
     },
     methods: {
       onAgree: function () {
-        if (this.userIsRegistered) {
+        if (this.isRegisteredUser) {
+          console.log('Starting unregistration')
           this.$store.dispatch('unregisterUserFromMeetup', this.meetupId)
         } else {
+          console.log('Starting registration')
           this.$store.dispatch('registerUserForMeetup', this.meetupId)
         }
       }
